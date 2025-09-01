@@ -13,7 +13,7 @@ OBJS = ${SRCS:${SRCS_DIR}%.cpp=${OBJ_DIR}%.o}
 DEPS = ${OBJS:%.o=%.d}
 
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -g -std=c++98
+CXXFLAGS = -Wall -Wextra -g -std=c++98 -Werror
 IFLAGS = -I./includes -MMD
 LFLAGS = 
 

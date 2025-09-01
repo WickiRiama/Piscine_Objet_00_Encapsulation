@@ -2,28 +2,28 @@
 #define DIVIDE_AND_RULE_HPP
 
 #include <iostream>
-#include <vector>
+#include <map>
 
 struct Account
 {
-	int id;
-	int value;
+	unsigned int id;
+	double value;
 
+	Account(void);
 
-	Account();
-
-	friend std::ostream& operator << (std::ostream& p_os, const Account& p_account);
+	friend std::ostream &operator<<(std::ostream &p_os, const Account &p_account);
 };
 
 struct Bank
 {
-	int liquidity;
-	std::vector<Account *> clientAccounts;
+private:
+public:
+	std::map<unsigned int, Account *> clientAccounts;
+	double liquidity;
+	Bank(void);
 
-	Bank();
-
-	friend std::ostream& operator << (std::ostream& p_os, const Bank& p_bank);
-
+	friend std::ostream &operator<<(std::ostream &p_os, const Bank &p_bank);
+	void addMoney(int amount, unsigned int account_id);
 };
 
 #endif
