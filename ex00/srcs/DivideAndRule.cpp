@@ -11,6 +11,24 @@ unsigned int Account::getId(void) const
 	return this->id;
 }
 
+Account::Account() : id(account_number), value(0) {
+	account_number ++;
+}
+
+unsigned int Account::getId(void) const
+{
+	return this->id;
+}
+
+Account::Account() : id(account_number), value(0) {
+	account_number ++;
+}
+
+unsigned int Account::getId(void) const
+{
+	return this->id;
+}
+
 std::ostream &operator<<(std::ostream &p_os, const Account &p_account)
 {
 	p_os << "[" << p_account.id << "] - [" << p_account.value << "]";
