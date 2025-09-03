@@ -4,18 +4,18 @@ int main()
 {
 	// Account creation
 	Account accountA = Account();
-	accountA.id = 0;
+	// accountA.id = 0; id is private and automatically set
 	accountA.value = 100;
 
 	Account accountB = Account();
-	accountB.id = 1;
+	// accountB.id = 1; id is private and automatically set
 	accountB.value = 100;
 
 	// Bank Creation
 	Bank bank = Bank();
 	bank.liquidity = 999;
-	bank.clientAccounts[accountA.id] = &accountA;
-	bank.clientAccounts[accountB.id] = &accountB;
+	bank.clientAccounts[accountA.getId()] = &accountA;
+	bank.clientAccounts[accountB.getId()] = &accountB;
 
 	// Loan
 	bank.liquidity -= 200;

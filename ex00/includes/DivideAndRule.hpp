@@ -6,11 +6,16 @@
 
 struct Account
 {
+private:
+	static unsigned int account_number;
 	unsigned int id;
-	double value;
 
-	Account(void);
+public:
+	int value;
 
+	Account();
+
+	unsigned int getId(void) const;
 	friend std::ostream &operator<<(std::ostream &p_os, const Account &p_account);
 };
 

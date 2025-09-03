@@ -1,6 +1,15 @@
 #include "DivideAndRule.hpp"
 
-Account::Account() : id(-1), value(0) {}
+unsigned int Account::account_number = 0;
+
+Account::Account() : id(account_number), value(0) {
+	account_number ++;
+}
+
+unsigned int Account::getId(void) const
+{
+	return this->id;
+}
 
 std::ostream &operator<<(std::ostream &p_os, const Account &p_account)
 {
@@ -28,7 +37,7 @@ void Bank::addMoney(int amount, unsigned int account_id)
 	}
 	catch (const std::out_of_range &error)
 	{
-		std::cout << "This account doesn't exist" << std::endl;
+		std::cout << "This account doesn't exist." << std::endl;
 		return;
 	}
 	account->value += amount * 0.95;
