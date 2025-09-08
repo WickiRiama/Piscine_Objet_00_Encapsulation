@@ -3,23 +3,25 @@
 int main()
 {
 	// Account creation
-	Account accountA = Account();
+	Account accountA = Account(100);
 	// accountA.id = 0; id is private and automatically set
-	accountA.value = 100;
+	// accountA.value = 100; value is private
 
-	Account accountB = Account();
+	Account accountB = Account(100);
 	// accountB.id = 1; id is private and automatically set
-	accountB.value = 100;
+	// accountB.value = 100; value is private
 
 	// Bank Creation
-	Bank bank = Bank();
-	bank.liquidity = 999;
-	bank.clientAccounts[accountA.getId()] = &accountA;
-	bank.clientAccounts[accountB.getId()] = &accountB;
+	Bank bank = Bank(999);
+	// bank.liquidity = 999; liquidity is private
+
+	// Account Creation
+	// bank.clientAccounts[accountA.getId()] = &accountA; clientAccount is private
+	// bank.clientAccounts[accountB.getId()] = &accountB; clientAccount is private
 
 	// Loan
-	bank.liquidity -= 200;
-	accountA.value += 400;
+	// bank.liquidity -= 200; liquidity is private
+	// accountA.value += 400; value is private
 
 	//Transfer
 	bank.addMoney(80, 0);

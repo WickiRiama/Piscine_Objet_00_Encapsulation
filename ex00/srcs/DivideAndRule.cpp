@@ -2,26 +2,9 @@
 
 unsigned int Account::account_number = 0;
 
-Account::Account() : id(account_number), value(0) {
-	account_number ++;
-}
-
-unsigned int Account::getId(void) const
+Account::Account(double start_value) : id(account_number), value(std::max(0.0, start_value))
 {
-	return this->id;
-}
-
-Account::Account() : id(account_number), value(0) {
-	account_number ++;
-}
-
-unsigned int Account::getId(void) const
-{
-	return this->id;
-}
-
-Account::Account() : id(account_number), value(0) {
-	account_number ++;
+	account_number++;
 }
 
 unsigned int Account::getId(void) const
@@ -35,7 +18,7 @@ std::ostream &operator<<(std::ostream &p_os, const Account &p_account)
 	return (p_os);
 }
 
-Bank::Bank() : liquidity(0) {}
+Bank::Bank(double start_liquidity) : liquidity(std::max(0.0, start_liquidity)) {}
 
 void Bank::addMoney(int amount, unsigned int account_id)
 {
@@ -62,7 +45,7 @@ void Bank::addMoney(int amount, unsigned int account_id)
 	this->liquidity += amount * 0.05;
 	std::cout << "--Tranfert of " << amount << " to account " << account_id << std::endl
 			  << amount * 0.95 << " was credited to the account"
-			  << ". The bank took " <<  amount * 0.05 << " (5\%) of fees."
+			  << ". The bank took " << amount * 0.05 << " (5\%) of fees."
 			  << std::endl;
 }
 

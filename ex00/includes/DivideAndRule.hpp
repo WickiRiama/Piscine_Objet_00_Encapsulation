@@ -9,23 +9,24 @@ struct Account
 private:
 	static unsigned int account_number;
 	unsigned int id;
+	double value;
 
 public:
-	int value;
-
-	Account();
+	Account(double start_value = 0);
 
 	unsigned int getId(void) const;
 	friend std::ostream &operator<<(std::ostream &p_os, const Account &p_account);
+	friend class Bank;
 };
 
 struct Bank
 {
 private:
-public:
 	std::map<unsigned int, Account *> clientAccounts;
 	double liquidity;
-	Bank(void);
+
+public:
+	Bank(double start_liquidity = 0);
 
 	friend std::ostream &operator<<(std::ostream &p_os, const Bank &p_bank);
 	void addMoney(int amount, unsigned int account_id);
