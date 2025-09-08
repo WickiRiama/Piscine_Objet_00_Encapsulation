@@ -20,33 +20,89 @@ std::ostream &operator<<(std::ostream &p_os, const Account &p_account)
 
 Bank::Bank(double start_liquidity) : liquidity(std::max(0.0, start_liquidity)) {}
 
-void Bank::addMoney(int amount, unsigned int account_id)
+Bank::~Bank(void)
 {
-	Account *account;
-
-	if (amount < 0)
+	for (std::map<unsigned int, Account *>::iterator it = this->clientAccounts.begin(); it != this->clientAccounts.end(); it++)
 	{
-		std::cout << "You can't add a negative amount to an account."
-				  << " If you tried to add more than "
-				  << __INT_MAX__ << ", try a lower amount."
-				  << std::endl;
-		return;
+		this->deleteAccount(it->first);
 	}
+}
+
+unsigned int Bank::createAccount(double start_amount)
+{
+	Account *new_account = new Account(start_amount);
+	this->clientAccounts[new_account->getId()] = new_account;
+	return new_account->getId();
+}
+
+void Bank::deleteAccount(unsigned int id)
+{
 	try
 	{
-		account = this->clientAccounts.at(account_id);
+		delete this->clientAccounts.at(id);
+		std::cout << "Account " << id << " deleted." << std::endl;
 	}
 	catch (const std::out_of_range &error)
 	{
-		std::cout << "This account doesn't exist." << std::endl;
-		return;
+		std::cerr << "Account " << id << " does not exist." << std::endl;
 	}
-	account->value += amount * 0.95;
+}
+
+void Bank::addMoney(double amount, unsigned int account_id)
+{
+	std::cout << " - Adding " << amount << " to account "
+			  << account_id << " -" << std::endl;
+	this->clientAccounts.at(account_id)->value += amount * 0.95;
 	this->liquidity += amount * 0.05;
-	std::cout << "--Tranfert of " << amount << " to account " << account_id << std::endl
-			  << amount * 0.95 << " was credited to the account"
+	std::cout << amount * 0.95 << " was credited to the account"
 			  << ". The bank took " << amount * 0.05 << " (5\%) of fees."
-			  << std::endl;
+			  << std::endl
+			  << "  ----" << std::endl;
+}
+
+void Bank::removeMoney(double amount, unsigned int account_id)
+{
+	std::cout << " - Removing " << amount << " from account "
+			  << account_id << " -" << std::endl;
+	this->clientAccounts.at(account_id)->value -= amount;
+	std::cout << amount << " was removed from the account"
+			  << std::endl
+			  << "  ----" << std::endl;
+}
+
+void Bank::transferMoney(double amount, unsigned int from_id, unsigned int to_id)
+{
+	std::cout << " -- Tranfer of " << amount
+			  << " from account " << from_id
+			  << " to account " << to_id
+			  << " --" << std::endl;
+	if (amount < 0)
+	{
+		std::cerr << "You can't transfer a negative amount."
+				  << std::endl;
+	}
+	else if (this->clientAccounts.find(from_id) == this->clientAccounts.end())
+	{
+		std::cerr << "The account " << from_id
+				  << " does not exist." << std::endl;
+	}
+	else if (this->clientAccounts.find(to_id) == this->clientAccounts.end())
+	{
+		std::cerr << "The account " << to_id
+				  << " does not exist." << std::endl;
+	}
+	else if (this->clientAccounts.at(from_id)->value < amount)
+	{
+		std::cerr << "The account " << from_id
+				  << " does not have the necessary funds." << std::endl;
+	}
+	else
+	{
+		this->removeMoney(amount, from_id);
+		this->addMoney(amount, to_id);
+	}
+
+	std::cout << " -----" << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &p_os, const Bank &p_bank)
