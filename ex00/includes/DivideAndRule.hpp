@@ -13,7 +13,12 @@ private:
 	Account(double start_value = 0);
 
 public:
+	Account(Account const &src);
+	~Account(void);
+
+	Account &operator=(Account const &rhs);
 	unsigned int getId(void) const;
+
 	friend std::ostream &operator<<(std::ostream &p_os, const Account &p_account);
 	friend class Bank;
 };
@@ -23,13 +28,16 @@ struct Bank
 private:
 	std::map<unsigned int, Account *> clientAccounts;
 	double liquidity;
+
 	void addMoney(double amount, unsigned int account_id);
 	void removeMoney(double amount, unsigned int account_id);
 
 public:
 	Bank(double start_liquidity = 0);
+	Bank(Bank const &src);
 	~Bank(void);
 
+	Bank &operator=(Bank const &rhs);
 	friend std::ostream &operator<<(std::ostream &p_os, const Bank &p_bank);
 	unsigned int createAccount(double start_amount);
 	void deleteAccount(unsigned int id);

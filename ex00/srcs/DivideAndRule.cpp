@@ -7,9 +7,29 @@ Account::Account(double start_value) : id(account_number), value(std::max(0.0, s
 	account_number++;
 }
 
+Account::Account(Account const &src) : id(account_number)
+{
+	account_number++;
+	*this = src;
+}
+
+Account::~Account(void)
+{
+	std::cout << "Account " << this->id << " deleted." << std::endl;
+}
+
 unsigned int Account::getId(void) const
 {
 	return this->id;
+}
+
+Account &Account::operator=(Account const &rhs)
+{
+	if (this != &rhs)
+	{
+		this->value = rhs.value;
+	}
+	return *this;
 }
 
 std::ostream &operator<<(std::ostream &p_os, const Account &p_account)
@@ -20,12 +40,35 @@ std::ostream &operator<<(std::ostream &p_os, const Account &p_account)
 
 Bank::Bank(double start_liquidity) : liquidity(std::max(0.0, start_liquidity)) {}
 
+Bank::Bank(Bank const &src)
+{
+	*this = src;
+}
+
 Bank::~Bank(void)
 {
-	for (std::map<unsigned int, Account *>::iterator it = this->clientAccounts.begin(); it != this->clientAccounts.end(); it++)
+	while (this->clientAccounts.size() > 0)
 	{
-		this->deleteAccount(it->first);
+		this->deleteAccount(this->clientAccounts.begin()->first);
 	}
+}
+
+Bank &Bank::operator=(Bank const &rhs)
+{
+	if (this != &rhs)
+	{
+		this->liquidity = rhs.liquidity;
+		while (this->clientAccounts.size() > 0)
+		{
+			std::cerr << this->clientAccounts.size() << std::endl;
+			this->deleteAccount(this->clientAccounts.begin()->first);
+		}
+		for (std::map<unsigned int, Account *>::const_iterator it = rhs.clientAccounts.begin(); it != rhs.clientAccounts.end(); it++)
+		{
+			this->createAccount(it->second->value);
+		}
+	}
+	return *this;
 }
 
 unsigned int Bank::createAccount(double start_amount)
@@ -40,7 +83,7 @@ void Bank::deleteAccount(unsigned int id)
 	try
 	{
 		delete this->clientAccounts.at(id);
-		std::cout << "Account " << id << " deleted." << std::endl;
+		this->clientAccounts.erase(id);
 	}
 	catch (const std::out_of_range &error)
 	{
