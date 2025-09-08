@@ -10,8 +10,10 @@ int main()
 	unsigned int accountB = bank.createAccount(100);
 
 	// Loan
-	// bank.liquidity -= 200; liquidity is private
-	// accountA.value += 400; value is private
+	bank.loanMoney(200, accountA);
+	bank.loanMoney(900, accountB);
+	bank.loanMoney(50, 3);
+	bank.loanMoney(-10, accountA);
 
 	//Transfer
 	bank.transferMoney(80, accountB, accountA);
@@ -20,12 +22,8 @@ int main()
 	bank.transferMoney(20, 3, accountB);
 	bank.transferMoney(50, accountB, accountA);
 
-	// std::cout << "Account : " << std::endl;
-	// std::cout << accountA << std::endl;
-	// std::cout << accountB << std::endl;
-
+	// Final State
 	std::cout << " ----- " << std::endl;
-
 	std::cout << "Bank : " << std::endl;
 	std::cout << bank << std::endl;
 

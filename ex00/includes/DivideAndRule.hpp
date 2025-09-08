@@ -13,7 +13,6 @@ private:
 	Account(double start_value = 0);
 
 public:
-
 	unsigned int getId(void) const;
 	friend std::ostream &operator<<(std::ostream &p_os, const Account &p_account);
 	friend class Bank;
@@ -35,6 +34,7 @@ public:
 	unsigned int createAccount(double start_amount);
 	void deleteAccount(unsigned int id);
 	void transferMoney(double amount, unsigned int from_id, unsigned int to_id);
+	void loanMoney(double amount, unsigned int account_id);
 };
 
 #endif

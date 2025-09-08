@@ -105,6 +105,35 @@ void Bank::transferMoney(double amount, unsigned int from_id, unsigned int to_id
 	std::cout << " -----" << std::endl;
 }
 
+void Bank::loanMoney(double amount, unsigned int account_id)
+{
+	std::cout << " -- Loan of " << amount
+			  << " to account " << account_id
+			  << " --" << std::endl;
+	if (amount < 0)
+	{
+		std::cerr << "You can't loan a negative amount."
+				  << std::endl;
+	}
+	else if (this->clientAccounts.find(account_id) == this->clientAccounts.end())
+	{
+		std::cerr << "The account " << account_id
+				  << " does not exist." << std::endl;
+	}
+	else if (this->liquidity < amount)
+	{
+		std::cerr << "The bank does not have the necessary funds."
+				  << std::endl;
+	}
+	else
+	{
+		this->liquidity -= amount;
+		this->addMoney(amount, account_id);
+	}
+
+	std::cout << " -----" << std::endl;
+}
+
 std::ostream &operator<<(std::ostream &p_os, const Bank &p_bank)
 {
 	p_os << "Bank informations : " << std::endl;
